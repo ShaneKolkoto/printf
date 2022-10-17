@@ -15,7 +15,7 @@ int main(void)
 	_printf("%R\n", "123");
 	a = _printf("%R\n", "hello");
 	_printf("%d\n", a);
-	a = printf("%s\n", "hello");
+	a = printf("%S\n", "hello");
 	printf("%d\n", a);
 	a = _printf("%R\n", "Best School");
 	printf("%d\n", a);
