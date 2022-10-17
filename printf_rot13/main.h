@@ -25,7 +25,7 @@ int p_int(va_list args);
 int p_bin(va_list args);
 int p_rev(va_list args);
 char *_strcpy(char *dest, const char *str);
-int _strlen(char *s);
+int _strlen(char *S);
 int *print_formats(int i, char *copyfmt, va_list args);
 int p_unsigned(va_list args);
 int p_octal(va_list args);
