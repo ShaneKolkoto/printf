@@ -1,56 +1,77 @@
 #include "main.h"
-
 /**
- * print_reversed - Calls a function to reverse and print a string
- * @arg: Argument passed to the function
- * Return: The amount of characters printed
+ * print_from_to - prints a range of char addresses
+ * @start: starting address
+ * @stop: stopping address
+ * @except: except address
+ *
+ * Return: number bytes printed
  */
-int print_reversed(va_list arg)
-{
-    int len;
-    char *str;
-    char *ptr;
 
-    str = va_arg(arg, char *);
-    if (str == NULL)
-        return (-1);
-    ptr = rev_string(str);
-    if (ptr == NULL)
-        return (-1);
-    for (len = 0; ptr[len] != '\0'; len++)
-        print_char(ptr[len]);
-    free(ptr);
-    return (len);
+int print_from_to(char *start, char *stop, char *except)
+{
+    int count = 0;
+
+    while (start <= stop)
+    {
+        if (start != except)
+            count += _putchar(*start);
+        start++;
+    }
+    return (count);
 }
 
 /**
- * rot13 - Converts string to rot13
- * @list: string to convert
- * Return: converted string
+ * print_rev - prints string in reverse
+ * @ap: string
+ * @params: the parameters struct
+ *
+ * Return: number bytes printed
  */
-int print_rot13(va_list list)
+int print_rev(va_list ap, params_t *params)
 {
-    int i;
-    int x;
-    char *str;
-    char s[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    char u[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
+    int len, count = 0;
+    char *str = va_arg(ap, char *);
+    (void)params;
 
-    str = va_arg(list, char *);
-    if (str == NULL)
-        return (-1);
-    for (i = 0; str[i] != '\0'; i++)
+    if (str)
     {
-        for (x = 0; x <= 52; x++)
-        {
-            if (str[i] == s[x])
-            {
-                print_char(u[x]);
-                break;
-            }
-        }
-        if (x == 53)
-            print_char(str[i]);
+        for (len = 0; *str; str++)
+            len++;
+        str--;
+        for (; len > 0; len--, str--)
+            count += _putchar(*str);
     }
-    return (i);
+    return (count);
+}
+
+/**
+ * print_rot13 - Prints a string in rot13 format
+ * @ap: string
+ * @params: the parameters struct
+ *
+ * Return: number of printed characters
+ */
+int print_rot13(va_list ap, params_t *params)
+{
+    int i, index;
+    int count = 0;
+    char arr[] = "NOPQRSTUVWXYZABCDEFGHIJKLM nopqrstuvwxyzabcdefghijklm";
+    char *a = va_arg(ap, char *);
+    (void)params;
+
+    i = 0;
+    index = 0;
+    while (a[i])
+    {
+        if ((a[i] >= 'A' && a[i] <= 'Z') || (a[i] >= 'a' && a[i] <= 'z'))
+        {
+            index = a[i] - 65;
+            count += _putchar(arr[index]);
+        }
+        else
+            count += _putchar(a[i]);
+        i++;
+    }
+    return (count);
 }
