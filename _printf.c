@@ -1,36 +1,47 @@
 #include "main.h"
-
 /**
- * _printf - Receives the main string and all the necessary parameters to
- * print a formated string
- * @format: A string containing all the desired characters
- * Return: A total count of the characters printed
+ * _printf - contains the string and parameters needed to print a formated string
+ * @format: points to the string with all the desired characters/arguments
+ * @ap: variable that refers to each argument in turn, argument pointer
+ * Return: A count of characters to be printed
  */
+
 int _printf(const char *format, ...)
 {
-	int printed_chars;
-	conver_t f_list[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"%", print_percent},
-		{"d", print_integer},
-		{"i", print_integer},
-		{"b", print_binary},
-		/*{"r", print_reversed}, */
-		{"R", rot13},
-		{"u", unsigned_integer},
-		{"o", print_octal},
-		{"x", print_hex},
-		{"X", print_heX},
-		{NULL, NULL}};
-	va_list arg_list;
+int count = 0;
+va_list ap;
+char *p, *start;
+params_t params = PARAMS;
 
-	if (format == NULL)
-		return (-1);
+va_start(ap, format);
 
-	va_start(arg_list, format);
-	/*Calling parser function*/
-	printed_chars = parser(format, f_list, arg_list);
-	va_end(arg_list);
-	return (printed_chars);
+if (!format )
+        return (-1);
+for (p = (char *)format; *p; p++)
+{
+init_params(&params, ap);
+if (*p != '%')
+{
+count = count + _putchar(*p);
+continue;
+}
+start = p;
+p++;
+while (get_flag(p, &params))
+{
+p++;
+}
+p = get_width(p, &params, ap);
+p = get_precision(p, &params, ap);
+if (get_modifier(p, &params))
+p++;
+if (!get_specifier(p))
+count += print_from_to(start, p,
+params.l_modifier || params.h_modifier ? p - 1 : 0);
+else
+count += get_print_func(p, ap, &params);
+}
+_putchar(BUFFER_FLUSH);
+va_end(ap);
+return (count);
 }
