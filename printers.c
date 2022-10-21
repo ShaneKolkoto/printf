@@ -1,77 +1,56 @@
-#include "main.h"
-/**
- * print_from_to - prints a range of char addresses
- * @start: starting address
- * @stop: stopping address
- * @except: except address
- *
- * Return: number bytes printed
- */
-
-int print_from_to(char *start, char *stop, char *except)
-{
-int count = 0;
-
-while (start <= stop)
-{
-if (start != except)
-count += _putchar(*start);
-start++;
-}
-return (count);
-}
+#include "holberton.h"
 
 /**
- * print_rev - prints string in reverse
- * @ap: string
- * @params: the parameters struct
- *
- * Return: number bytes printed
+ * print_reversed - Calls a function to reverse and print a string
+ * @arg: Argument passed to the function
+ * Return: The amount of characters printed
  */
-int print_rev(va_list ap, params_t *params)
+int print_reversed(va_list arg)
 {
-int len, count = 0;
-char *str = va_arg(ap, char *);
-(void)params;
+    int len;
+    char *str;
+    char *ptr;
 
-if (str)
-{
-for (len = 0; *str; str++)
-len++;
-str--;
-for (; len > 0; len--, str--)
-count += _putchar(*str);
-}
-return (count);
+    str = va_arg(arg, char *);
+    if (str == NULL)
+        return (-1);
+    ptr = rev_string(str);
+    if (ptr == NULL)
+        return (-1);
+    for (len = 0; ptr[len] != '\0'; len++)
+        _write_char(ptr[len]);
+    free(ptr);
+    return (len);
 }
 
 /**
- * print_rot13 - Prints a string in rot13 format
- * @ap: string
- * @params: the parameters struct
- *
- * Return: number of printed characters
+ * rot13 - Converts string to rot13
+ * @list: string to convert
+ * Return: converted string
  */
-int print_rot13(va_list ap, params_t *params)
+int rot13(va_list list)
 {
-int i, index;
-int count = 0;
-char arr[] ="NOPQRSTUVWXYZABCDEFGHIJKLM nopqrstuvwxyzabcdefghijklm";
-char *a = va_arg(ap, char *);
-(void)params;
+    int i;
+    int x;
+    char *str;
+    char s[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    char u[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-i = 0;
-index = 0;
-while (a[i])
-{
-if ((a[i] >= 'A' && a[i] <= 'Z') || (a[i] >= 'a' && a[i] <= 'z'))
-{
-index = a[i] - 65;
-count += _putchar(arr[index]);
-}
-else
-count += _putchar(a[i]);
-i++;
-}
-return (count);
+    str = va_arg(list, char *);
+    if (str == NULL)
+        return (-1);
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        for (x = 0; x <= 52; x++)
+        {
+            if (str[i] == s[x])
+            {
+                _write_char(u[x]);
+                break;
+            }
+        }
+        if (x == 53)
+            _write_char(str[i]);
+    }
+    return (i);
 }
