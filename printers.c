@@ -18,7 +18,7 @@ int print_reversed(va_list arg)
     if (ptr == NULL)
         return (-1);
     for (len = 0; ptr[len] != '\0'; len++)
-        _write_char(ptr[len]);
+        print_char(ptr[len]);
     free(ptr);
     return (len);
 }
@@ -28,7 +28,7 @@ int print_reversed(va_list arg)
  * @list: string to convert
  * Return: converted string
  */
-int rot13(va_list list)
+int print_rot13(va_list list)
 {
     int i;
     int x;
@@ -45,12 +45,12 @@ int rot13(va_list list)
         {
             if (str[i] == s[x])
             {
-                _write_char(u[x]);
+                print_char(u[x]);
                 break;
             }
         }
         if (x == 53)
-            _write_char(str[i]);
+            print_char(str[i]);
     }
     return (i);
 }
